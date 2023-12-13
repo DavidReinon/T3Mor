@@ -1,4 +1,4 @@
-package es.florida.hibernate;
+package es.florida.hibernate.MiniProjecte;
 
 import java.time.LocalTime;
 
