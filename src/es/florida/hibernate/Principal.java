@@ -16,7 +16,7 @@ public class Principal {
 
 	public static void main(String[] args) {
 		// Carrega la configuracio i crea un session factory
-		Configuration configuration = new Configuration().configure(new File("./src/hibernate.cfg.xml"));
+		Configuration configuration = new Configuration().configure(new File("./src/hibernate.cfg.canco.xml"));
 		configuration.addFile(new File("./src/es/florida/hibernate/canco.hbm.xml"));
 		ServiceRegistry registry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties())
 				.build();
@@ -32,12 +32,12 @@ public class Principal {
 
 		// LLegir tota la taula (select *)
 		List<Canco> listaCanciones = new ArrayList<Canco>();
-		listaCanciones = session.createQuery("FROM Canco", Canco.class).getResultList();
+		listaCanciones = session.createQuery("FROM Canco", Canco.class).getResultList(); // Canco => NOM DE CLASE (NO DE
+																							// LA TABLA)
 
 		for (Canco canco : listaCanciones) {
 			System.out.println(canco.toString());
 		}
-		// Cancion => NOM DE CLASE (NO DE LA TABLA)
 
 		// Crear
 //		Canco crearCanco = new Canco("H20", "Leiti", "2:20", 2021);
@@ -55,8 +55,7 @@ public class Principal {
 //		session.delete(cancion3);
 
 		// Eliminar tota la tabla
-//		Query queryObject = session.createQuery("DELETE FROM canciones");
-		// canciones => NOM DE TAULA BBDD (NO DE LA CLASE)
+//		Query queryObject = session.createQuery("DELETE FROM canciones"); // canciones => NOM DE TAULA BBDD (NO DE LA CLASE)
 //		queryObject.executeUpdate();
 
 		// Commit de la transacció i tanca de sessió
