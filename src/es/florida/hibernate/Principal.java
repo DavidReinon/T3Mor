@@ -32,7 +32,7 @@ public class Principal {
 
 		// LLegir tota la taula (select *)
 		List<Canco> listaCanciones = new ArrayList<Canco>();
-		listaCanciones = session.createQuery("FROM Canco", Canco.class).getResultList(); // Canco => NOM DE CLASE (NO DE
+		listaCanciones = session.createQuery("FROM Canco", Canco.class).getResultList(); // FROM 'Canco' => NOM DE CLASE (NO DE
 																							// LA TABLA)
 
 		for (Canco canco : listaCanciones) {
@@ -55,7 +55,7 @@ public class Principal {
 //		session.delete(cancion3);
 
 		// Eliminar tota la tabla
-//		Query queryObject = session.createQuery("DELETE FROM canciones"); // canciones => NOM DE TAULA BBDD (NO DE LA CLASE)
+//		Query queryObject = session.createQuery("DELETE FROM canciones"); // FROM 'canciones' => NOM DE TAULA BBDD (NO DE LA CLASE)
 //		queryObject.executeUpdate();
 
 		// Commit de la transacció i tanca de sessió
