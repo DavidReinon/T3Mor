@@ -12,7 +12,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
 
-public class Principal {
+public class Executable {
 
 	public static void main(String[] args) {
 		// Carrega la configuracio i crea un session factory
