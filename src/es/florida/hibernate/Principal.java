@@ -11,6 +11,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
+import org.hibernate.type.TrueFalseType;
 
 public class Principal {
 
@@ -24,45 +25,97 @@ public class Principal {
 
 		// Obri una nova sessió de la session factory
 		Session session = sessionFactory.openSession();
-		session.beginTransaction();
 
-		// LLegir (select)
-		Canco canco1 = (Canco) session.get(Canco.class, 1);
-		System.out.println(canco1.toString());
+		// selectCanco(session, 1); //El index comienca por uno.
+		// selectTotesCancons(session);
 
-		// LLegir tota la taula (select *)
-		List<Canco> listaCanciones = new ArrayList<Canco>();
-		listaCanciones = session.createQuery("FROM Canco", Canco.class).getResultList(); // FROM 'Canco' => NOM DE CLASE (NO DE
-																							// LA TABLA)
+		// Canco crearCanco = new Canco("H20", "Leiti", "2:20", 2021);
+		// System.out.println("Id creat: " + crearCanco(session, crearCanco));
 
-		for (Canco canco : listaCanciones) {
-			System.out.println(canco.toString());
-		}
+		// actualizarCanco(session, 2, 2021, "04:30");
 
-		// Crear
-//		Canco crearCanco = new Canco("H20", "Leiti", "2:20", 2021);
-//		Serializable id = session.save(crearCanco);
-
-		// Actualizar
-//		Canco cancion2 = (Canco) session.load(Canco.class, 2);
-//		cancion2.setAny(2010);
-//		cancion2.setDuracio("02:30");
-//		session.update(cancion2);
-
-		// Eliminar
-//		Canco cancion3 = new Canco();
-//		cancion3.setId(3);
-//		session.delete(cancion3);
-
-		// Eliminar tota la tabla
-//		Query queryObject = session.createQuery("DELETE FROM canciones"); // FROM 'canciones' => NOM DE TAULA BBDD (NO DE LA CLASE)
-//		queryObject.executeUpdate();
-
-		// Commit de la transacció i tanca de sessió
-		session.getTransaction().commit();
-		session.clear();
+		eliminarCanco(session, 5);
+		// eliminarTodaLaTabla(session);
+		// session.clear();
 		session.close();
 
+	}
+
+	private static void selectCanco(Session session, int id) {
+		session.beginTransaction();
+
+		Canco cancoSelccionada = (Canco) session.get(Canco.class, id);
+		System.out.println(cancoSelccionada.toString());
+
+		session.getTransaction().commit();
+	}
+
+	private static void selectTotesCancons(Session session) {
+		session.beginTransaction();
+
+		ArrayList<Canco> cancos = (ArrayList<Canco>) session.createQuery("FROM Canco", Canco.class).getResultList(); // FROM
+																														// 'Canco'
+																														// =>
+																														// NOM
+																														// DE
+																														// CLASE
+																														// (NO
+																														// DE
+																														// LA
+																														// TABLA)
+
+		for (Canco canco : cancos) {
+			System.out.println(canco.toString());
+		}
+		// session.getTransaction().commit();
+
+	}
+
+	public static Serializable crearCanco(Session session, Canco canco) {
+		// Canco crearCanco = new Canco("H20", "Leiti", "2:20", 2021);
+		session.beginTransaction();
+		Serializable id = session.save(canco);
+		session.getTransaction().commit();
+		return id; // Si no ha fallo throw un error, no se guarda null.
+	}
+
+	public static void actualizarCanco(Session session, int id, int any, String duracio) {
+		// Exemple de actualizar per altre parametre (nombre)
+//		Canco canco = (Canco) session.createQuery("FROM Canco WHERE nombre = :nombre")
+//		        .setParameter("nombre", nombre)
+//		        .uniqueResult();
+//
+//		    if (canco != null) {
+//		        canco.setAny(any);
+//		        canco.setDuracio(duracio);
+//		        session.update(canco);
+//		    }
+
+		session.beginTransaction();
+		Canco canco = (Canco) session.load(Canco.class, id);
+
+		canco.setAny(any);
+		canco.setDuracio(duracio);
+
+		session.update(canco);
+		session.getTransaction().commit();
+	}
+
+	public static void eliminarCanco(Session session, int id) {
+		session.beginTransaction();
+		Canco canco = new Canco();
+
+		canco.setId(id);
+		session.delete(canco);
+		session.getTransaction().commit();
+	}
+
+	public static void eliminarTodaLaTabla(Session session) {
+		session.beginTransaction();
+		Query queryObject = session.createQuery("DELETE FROM cançons"); // FROM 'cançons' => NOM DE TAULA BBDD (NO
+																		// DE LA CLASE)
+		queryObject.executeUpdate();
+		session.getTransaction().commit();
 	}
 
 }
